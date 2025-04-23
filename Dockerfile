@@ -1,4 +1,4 @@
-FROM alpine:3.19.0 AS base
+FROM alpine:3.21.0 AS base
 
 # --- Build
 
@@ -12,7 +12,7 @@ RUN mv principia-master principia
 
 WORKDIR /principia/
 RUN cmake . -G Ninja -DSCREENSHOT_BUILD=ON
-RUN ninja -j14
+RUN ninja
 
 # --- Install
 
@@ -21,5 +21,4 @@ FROM base AS final
 RUN apk add --no-cache libgcc libstdc++ mesa-dri-gallium mesa-gl xvfb freetype libpng jpeg zlib sdl2
 
 COPY --from=build /principia/principia /principia/
-COPY --from=build /principia/data-pc/ /principia/data-pc/
-COPY --from=build /principia/data-shared/ /principia/data-shared/
+COPY --from=build /principia/data/ /principia/data/
